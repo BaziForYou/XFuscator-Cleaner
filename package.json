@@ -1,0 +1,23 @@
+{
+  "name": "xfuscator-cleaner",
+  "version": "1.0.0",
+  "description": "a tool will clean XFuscator old obfuscate (dunno maybe a new one) and will replace all data it moved in another array",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaziForYou/XFuscator-Cleaner.git"
+  },
+  "author": "BaziForYou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BaziForYou/XFuscator-Cleaner/issues"
+  },
+  "homepage": "https://github.com/BaziForYou/XFuscator-Cleaner#readme",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "lua-format": "^1.4.0"
+  }
+}
