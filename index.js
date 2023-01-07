@@ -29,5 +29,6 @@ for (let line of beautified.split("\n")) {
    }
 }
 
-fs.writeFileSync('output.lua', finalCode, 'utf8');
+const finalCodebeautified = luamin.Beautify(finalCode, {RenameVariables: false, RenameGlobals: false, SolveMath: true}).split("\n").slice(4).join("\n")
+fs.writeFileSync('output.lua', finalCodebeautified, 'utf8');
 console.log("Done! cleaned file now saved inside output.lua")
