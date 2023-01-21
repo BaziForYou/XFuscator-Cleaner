@@ -1,7 +1,7 @@
 const luamin = require('lua-format')
 const fs = require('fs');
 const inputFile = process.argv[2] !== undefined ? process.argv[2] : "input.lua";
-let fileExtension = inputFile.split('.').pop();
+const fileExtension = inputFile.split('.').pop();
 let fileAddress = inputFile.split('\\');
 fileAddress.pop();
 fileAddress = fileAddress[0] !== undefined ? fileAddress.join('\\') : ".";
@@ -47,9 +47,9 @@ if (Code.trim().startsWith("math.randomseed")) {
     console.log(`Deobfuscated output saved to ${fileAddress}\\${lastFile.split('.')[0]}_Deobfuscated.${fileExtension}`)
 }
 
-console.log("Cleaning deobfuscated file...")
+console.log("Cleaning and Renaming variables of deobfuscated file...")
 const beautified = luamin.Beautify(Code, {RenameVariables: true, RenameGlobals: false, SolveMath: false});
-console.log("Cleaned going to clean variables...")
+console.log("Cleaning and Renaming variables Done. Going to replace variables...")
 let finalCode = Sign
 let Variables = {}
 let mainTableName = ""
@@ -138,7 +138,7 @@ for (let line of beautified.split("\n")) {
         finalCode += line + "\n"
    }
 }
-console.log("Cleaning finished!")
+console.log("Replacing finished!")
 const finalCodeBeautified = luamin.Beautify(finalCode, {RenameVariables: false, RenameGlobals: false, SolveMath: true}).split("\n").slice(4).join("\n")
 fs.writeFileSync(`${fileAddress}\\${lastFile.split('.')[0]}_finalOutput.${fileExtension}`, finalCodeBeautified, 'utf8');
-console.log(`Done! cleaned file now saved inside ${fileAddress}\\${lastFile.split('.')[0]}_finalOutput.${fileExtension}`)
+console.log(`Done! final file now saved inside ${fileAddress}\\${lastFile.split('.')[0]}_finalOutput.${fileExtension}`)
