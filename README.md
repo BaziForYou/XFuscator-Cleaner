@@ -11,3 +11,9 @@ its easy as fuck to extract code if you know a little lua
 ```bash
 node index.js
 ```
+### OR
+- Pass code as argument
+- enter command like this to run
+```bash
+node index.js {fileAddress}
+```

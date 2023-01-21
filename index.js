@@ -1,10 +1,17 @@
 const luamin = require('lua-format')
 const fs = require('fs');
-if (!fs.existsSync('input.lua')) {
-    console.log("input.lua not found!")
+const inputFile = process.argv[2] !== undefined ? process.argv[2] : "input.lua";
+let fileExtension = inputFile.split('.').pop();
+let fileAddress = inputFile.split('\\');
+fileAddress.pop();
+fileAddress = fileAddress[0] !== undefined ? fileAddress.join('\\') : ".";
+const lastFile = inputFile.split('\\').pop();
+console.log(`Input file: ${lastFile}`);
+if (!fs.existsSync(inputFile)) {
+    console.log(`${lastFile} not found!`)
     process.exit(1)
 }
-let Code = fs.readFileSync('input.lua', 'utf8');
+let Code = fs.readFileSync(inputFile, 'utf8');
 
 function deobfuscate(code) { // thanks to https://github.com/lilabyte/fivem-deXFuscator i just used this logic and made it work with my cleaner
     let patterns = [
@@ -32,16 +39,18 @@ function deobfuscate(code) { // thanks to https://github.com/lilabyte/fivem-deXF
     }
 }
 
+const Sign = "-- Cleaned Using https://github.com/BaziForYou/XFuscator-Cleaner\n"
 if (Code.trim().startsWith("math.randomseed")) {
-    console.log("Deobfuscating...")
+    console.log("File is obfuscated! Deobfuscating ...")
     Code = deobfuscate(Code)
-    console.log("Deobfuscated!")
+    fs.writeFileSync(`${fileAddress}\\${lastFile.split('.')[0]}_Deobfuscated.${fileExtension}`, Sign + Code, 'utf8');
+    console.log(`Deobfuscated output saved to ${fileAddress}\\${lastFile.split('.')[0]}_Deobfuscated.${fileExtension}`)
 }
 
-console.log("Cleaning...")
+console.log("Cleaning deobfuscated file...")
 const beautified = luamin.Beautify(Code, {RenameVariables: true, RenameGlobals: false, SolveMath: false});
 console.log("Cleaned going to clean variables...")
-let finalCode = "-- Cleaned Using https://github.com/BaziForYou/XFuscator-Cleaner\n"
+let finalCode = Sign
 let Variables = {}
 let mainTableName = ""
 let variableFinding = false
@@ -131,5 +140,5 @@ for (let line of beautified.split("\n")) {
 }
 console.log("Cleaning finished!")
 const finalCodeBeautified = luamin.Beautify(finalCode, {RenameVariables: false, RenameGlobals: false, SolveMath: true}).split("\n").slice(4).join("\n")
-fs.writeFileSync('output.lua', finalCodeBeautified, 'utf8');
-console.log("Done! cleaned file now saved inside output.lua")
+fs.writeFileSync(`${fileAddress}\\${lastFile.split('.')[0]}_finalOutput.${fileExtension}`, finalCodeBeautified, 'utf8');
+console.log(`Done! cleaned file now saved inside ${fileAddress}\\${lastFile.split('.')[0]}_finalOutput.${fileExtension}`)
