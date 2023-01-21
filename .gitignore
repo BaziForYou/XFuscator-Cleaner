@@ -179,5 +179,6 @@ dist
 
 # tests
 *.lua
+!input.lua
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,yarn
