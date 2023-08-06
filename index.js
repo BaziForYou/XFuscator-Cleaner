@@ -68,10 +68,21 @@ for (let line of beautified.split("\n")) {
     } else {
         console.log(`Found ${variables.length} variables inside main table! Method: 1`)
         for (const variable of variables) {
-            const name = variable.split(" = ")[0].replace("[", "").replace("]", "")
-            const value = variable.split(" = ")[1]
+            var name = variable.split(" = ")[0].replace("[", "").replace("]", "")
+            var value = variable.split(" = ")[1]
+            if (!value) {
+                value = line.split(",")[0]
+                if (!value) {
+                    value = line
+                }
+                name = size_dict(Variables) + 1
+                value = value.trim()
+            }
             if (value.includes(`"`) && value.includes(`\\`)) {
                 const finalValue = value.slice(1, -1).split("\\").map(Number).map(x => {
+                    if (x.startsWith("x")) {
+                        x = parseInt(x.replace("x", ""), 16)
+                    }
                     const Converted = String.fromCharCode(x)
                     if (Converted.includes(`\\`)) {
                         return `\\\\`
@@ -102,10 +113,21 @@ for (let line of beautified.split("\n")) {
             variableFinding = false
             console.log(`Found ${size_dict(Variables)} variables inside main table! Method: 2`)
         } else {
-            const name = line.split(" = ")[0].replace("[", "").replace("]", "").trim()
-            const value = line.split(" = ")[1]
+            var name = line.split(" = ")[0].replace("[", "").replace("]", "").trim()
+            var value = line.split(" = ")[1]
+            if (!value) {
+                value = line.split(",")[0]
+                if (!value) {
+                    value = line
+                }
+                name = size_dict(Variables) + 1
+                value = value.trim()
+            }
             if (value.includes(`"`) && value.includes(`\\`)) {
                 const finalValue = value.replace(new RegExp(`"`, "g"),``).replace(new RegExp(`,`, "g"),``).split("\\").map(x => {
+                    if (x.startsWith("x")) {
+                        x = parseInt(x.replace("x", ""), 16)
+                    }
                     const Converted = String.fromCharCode(x)
                     if (Converted.includes(`\\`)) {
                         return `\\\\`
